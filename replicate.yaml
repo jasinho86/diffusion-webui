@@ -1,0 +1,18 @@
+name: diffusion-worker
+version: "1.0"
+description: Custom diffusion model deployed from RunPod endpoint
+runtime: python3.10
+handler: predict.py
+
+input:
+  prompt:
+    type: string
+    description: "Text prompt for image generation"
+    required: true
+
+output:
+  type: string
+  description: "Generated image URL"
+
+runpod:
+  endpoint: "https://api.runpod.ai/v2/aklfg0z6vp4mvj/run"
