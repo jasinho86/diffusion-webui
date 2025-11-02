@@ -1,18 +1,32 @@
 import requests
-import os
-
-RUNPOD_ENDPOINT = "https://api.runpod.ai/v2/aklfg0z6vp4mvj/run"
-RUNPOD_API_KEY = os.environ.get("RUNPOD_API_KEY")
 
 def predict(prompt: str):
+    # Endpoint tvog RunPod modela
+    endpoint = "https://api.runpod.ai/v2/aklfg0z6vp4mvj/run"
+    
+    # Podaci koje RunPod model očekuje (prompt, ili dodatne opcije)
+    payload = {
+        "input": {
+            "prompt": prompt
+        }
+    }
+
+    # Headeri — moraš dodati svoj RunPod API ključ ovdje
     headers = {
-        "Authorization": f"Bearer {RUNPOD_API_KEY}",
+        import os
+headers = {
+    "Authorization": f"Bearer {os.getenv('RUNPOD_API_KEY')}",
+    "Content-Type": "application/json"
+}
         "Content-Type": "application/json"
     }
-    payload = {"input": {"prompt": prompt}}
-    response = requests.post(RUNPOD_ENDPOINT, json=payload, headers=headers)
-    try:
+
+    # Pošalji zahtjev RunPodu
+    response = requests.post(endpoint, headers=headers, json=payload)
+
+    # Vrati rezultat
+    if response.status_code == 200:
         data = response.json()
         return data
-    except Exception as e:
-        return {"error": str(e)}
+    else:
+        return {"error": response.text}
